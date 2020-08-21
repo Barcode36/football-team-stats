@@ -19,9 +19,10 @@ public class TeamHistory {
 		
 	}
 	
-	public TeamHistory (String league, String opponent, String matchResult, 
+	public TeamHistory (String league, String date, String opponent, String matchResult, 
 						int homeGoals, int awayGoals, boolean bothSidesScored, boolean moreTotGoals) {
 		this.matchResult = matchResult;
+		this.date = date;
 		this.bothSidesScored = bothSidesScored;
 		this.moreTotGoals = moreTotGoals;
 		this.league = league;

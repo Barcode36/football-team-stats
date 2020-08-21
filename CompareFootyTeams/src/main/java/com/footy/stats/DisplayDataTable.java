@@ -48,24 +48,27 @@ public class DisplayDataTable extends Application {
 
 		TableColumn<TeamHistory, ?> column1 = new TableColumn<>("LEAGUE");
 		column1.setCellValueFactory(new PropertyValueFactory<>("league"));
+		
+		TableColumn<TeamHistory, ?> column2 = new TableColumn<>("DATE");
+		column2.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-		TableColumn<TeamHistory, ?> column2 = new TableColumn<>("OPPONENT");
-		column2.setCellValueFactory(new PropertyValueFactory<>("opponent"));
+		TableColumn<TeamHistory, ?> column3 = new TableColumn<>("OPPONENT");
+		column3.setCellValueFactory(new PropertyValueFactory<>("opponent"));
 
-		TableColumn<TeamHistory, String> column3 = new TableColumn<>("RESULT");
-		column3.setCellFactory(param -> stylingString (column3));
+		TableColumn<TeamHistory, String> column4 = new TableColumn<>("RESULT");
+		column4.setCellFactory(param -> stylingString (column4));
 
-		TableColumn<TeamHistory, ?> column4 = new TableColumn<>("GOALS FOR");
-		column4.setCellValueFactory(new PropertyValueFactory<>("homeGoals"));
+		TableColumn<TeamHistory, ?> column5 = new TableColumn<>("GOALS FOR");
+		column5.setCellValueFactory(new PropertyValueFactory<>("homeGoals"));
 
-		TableColumn<TeamHistory, ?> column5 = new TableColumn<>("GOALS AGAINST");
-		column5.setCellValueFactory(new PropertyValueFactory<>("awayGoals"));
+		TableColumn<TeamHistory, ?> column6 = new TableColumn<>("GOALS AGAINST");
+		column6.setCellValueFactory(new PropertyValueFactory<>("awayGoals"));
 
-		TableColumn<TeamHistory, String> column6 = new TableColumn<>("BOTH SIDES SCORED");
-		column6.setCellFactory(param -> stylingBoolean (column6, BOTH_SCORED));
+		TableColumn<TeamHistory, String> column7 = new TableColumn<>("BOTH SIDES SCORED");
+		column7.setCellFactory(param -> stylingBoolean (column7, BOTH_SCORED));
 
-		TableColumn<TeamHistory, String> column7 = new TableColumn<>("OVER 2.5 GOALS");
-		column7.setCellFactory(param -> stylingBoolean (column6, OVER_GOALS));
+		TableColumn<TeamHistory, String> column8 = new TableColumn<>("OVER 2.5 GOALS");
+		column8.setCellFactory(param -> stylingBoolean (column8, OVER_GOALS));
 
 		tableView.getColumns().add(column1);
 		tableView.getColumns().add(column2);
@@ -74,12 +77,13 @@ public class DisplayDataTable extends Application {
 		tableView.getColumns().add(column5);
 		tableView.getColumns().add(column6);
 		tableView.getColumns().add(column7);
+		tableView.getColumns().add(column8);
 
 		for (int i = 0; i < index; i++)
-			tableView.getItems().add(new TeamHistory(teamHistoryLst.get(i).getLeague(), teamHistoryLst.get(i).getOpponent(), 
-					teamHistoryLst.get(i).getMatchResult(), teamHistoryLst.get(i).getHomeGoals(), 
-					teamHistoryLst.get(i).getAwayGoals(), teamHistoryLst.get(i).isBothSidesScored(), 
-					teamHistoryLst.get(i).isMoreTotGoals()));
+			tableView.getItems().add(new TeamHistory(teamHistoryLst.get(i).getLeague(), teamHistoryLst.get(i).getDate(), 
+					teamHistoryLst.get(i).getOpponent(), teamHistoryLst.get(i).getMatchResult(), 
+					teamHistoryLst.get(i).getHomeGoals(), teamHistoryLst.get(i).getAwayGoals(), 
+					teamHistoryLst.get(i).isBothSidesScored(), teamHistoryLst.get(i).isMoreTotGoals()));
 		
 		tableView.setMaxSize(900, 900);
 		
