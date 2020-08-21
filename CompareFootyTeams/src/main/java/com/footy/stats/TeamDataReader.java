@@ -53,6 +53,7 @@ public class TeamDataReader {
 									  + "form-fixtures')]";
 	static String xPathLeague = ".//div[contains(@class,'col12-lg-1 col12-m-1 col12-s-1 col12-xs-1 tournament divtable-data')]";
 	static String xPathOpponent = ".//div[contains(@class,'horizontal-match-display team')]";
+	static String homeTeam = "";
 	static String xPathMatchDate = ".//div[contains(@class,'col12-lg-1 col12-m-1 col12-s-0 col12-xs-0 date fourth-col-date "
 									+ "divtable-data')]";
 	static String xPathResults = ".//div[contains(@class,'col12-lg-1 col12-m-1 col12-s-0 col12-xs-0 divtable-data result')]";
@@ -125,7 +126,8 @@ public class TeamDataReader {
 		log.info("[ Total Matches - Both sides scored ] "+bothSidesScored+ "/"+index);
 		log.info("[ Total Matches - Over 2.5 goals ] "+overTotGoals+ "/"+index);
 		log.info("[ Goals For ] "+goalsFor+ " [ Goals Against ] "+goalsAgainst);
-		DisplayDataTable.getData(teamHistoryLst, index);
+		if (!teamHistoryLst.isEmpty())
+			DisplayDataTable.getData(homeTeam, teamHistoryLst, index);
 		System.exit(0);
 	}
 	/**
@@ -194,9 +196,7 @@ public class TeamDataReader {
 			driverWait.until(ExpectedConditions.visibilityOf(driver.findElement
 					(By.xpath(xPathPanel))));
 
-
 			populateData(driver);
-
 		}
 		catch (TimeoutException e) {
 			log.error("Timedout reading elements: {}", e);
@@ -226,7 +226,7 @@ public class TeamDataReader {
 		// Obtain home team name
 		Select select = new Select(driver.findElement(By.id("teams")));
 		WebElement option = select.getFirstSelectedOption();
-		String homeTeam = option.getText();
+		homeTeam = option.getText();
 		
 		for(WebElement e: statsLst) {
 
