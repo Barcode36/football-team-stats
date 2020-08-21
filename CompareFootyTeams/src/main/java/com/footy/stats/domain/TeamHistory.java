@@ -14,7 +14,22 @@ public class TeamHistory {
 	private String date;
 	private int homeGoals;
 	private int awayGoals;
-
+	
+	public TeamHistory() {
+		
+	}
+	
+	public TeamHistory (String league, String opponent, String matchResult, 
+						int homeGoals, int awayGoals, boolean bothSidesScored, boolean moreTotGoals) {
+		this.matchResult = matchResult;
+		this.bothSidesScored = bothSidesScored;
+		this.moreTotGoals = moreTotGoals;
+		this.league = league;
+		this.opponent = opponent;
+		this.homeGoals = homeGoals;
+		this.awayGoals = awayGoals;
+	}
+	
 	/**
 	 * @return the matchResult
 	 */

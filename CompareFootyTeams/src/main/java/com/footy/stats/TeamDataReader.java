@@ -1,6 +1,6 @@
 /**
  * @author SridevBalakrishnan
- *
+ * @purpose Fetches the stats of requested football team; returns opponent, match results, goals scored, etc.
  */
 
 package com.footy.stats;
@@ -32,7 +32,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.footy.stats.domain.TeamHistory;
 
-
 public class TeamDataReader {
 
 	static final Logger log = Logger.getLogger(TeamDataReader.class.getName());
@@ -47,7 +46,18 @@ public class TeamDataReader {
 	static String outputWorksheetName = "";
 	static String teamName = "";
 	static int index;
-
+	static String statsWebsiteLink = "WhoScored.com";
+	static String xPathFixtures = "//a[contains(text(),'Fixtures')]//parent::li";
+	static String xPathPanel = "//div[contains(@class,'col12-xs-12 col12-s-12 col12-m-12 col12-lg-12 ws-panel')]";
+	static String xPathFormFixtures = ".//div[contains(@class,'col12-lg-1 col12-m-1 col12-s-1 col12-xs-1 divtable-data "
+									  + "form-fixtures')]";
+	static String xPathLeague = ".//div[contains(@class,'col12-lg-1 col12-m-1 col12-s-1 col12-xs-1 tournament divtable-data')]";
+	static String xPathOpponent = ".//div[contains(@class,'horizontal-match-display team')]";
+	static String xPathMatchDate = ".//div[contains(@class,'col12-lg-1 col12-m-1 col12-s-0 col12-xs-0 date fourth-col-date "
+									+ "divtable-data')]";
+	static String xPathResults = ".//div[contains(@class,'col12-lg-1 col12-m-1 col12-s-0 col12-xs-0 divtable-data result')]";
+	static String xPathTable = "//div[contains(@class,'col12-lg-12 col12-m-12 col12-s-12 col12-xs-12 item divtable-row ')]";
+			
 	static List<TeamHistory> teamHistoryLst =  new ArrayList<>();
 
 	private TeamDataReader() {
@@ -57,7 +67,7 @@ public class TeamDataReader {
 	public static void main(String... args) throws IOException {
 
 		Scanner in = new Scanner(System.in);  
-		System.out.print("Enter football team name: ");    
+		System.out.print("Enter football team name: ");
 		teamName = in.nextLine();
 		System.out.print("Enter number of matches to pull stats for: ");    
 		index = Integer.parseInt(in.nextLine());
@@ -115,6 +125,7 @@ public class TeamDataReader {
 		log.info("[ Total Matches - Both sides scored ] "+bothSidesScored+ "/"+index);
 		log.info("[ Total Matches - Over 2.5 goals ] "+overTotGoals+ "/"+index);
 		log.info("[ Goals For ] "+goalsFor+ " [ Goals Against ] "+goalsAgainst);
+		DisplayDataTable.getData(teamHistoryLst, index);
 		System.exit(0);
 	}
 	/**
@@ -164,7 +175,7 @@ public class TeamDataReader {
 			WebElement search = driver.findElement(By.name("q"));
 
 			// Enter football team's name in search bar
-			search.sendKeys(teamName + " stats WhoScored.com");
+			search.sendKeys(teamName + " stats "+statsWebsiteLink);
 
 			// Maximize browser
 			driver.manage().window().maximize();
@@ -173,15 +184,15 @@ public class TeamDataReader {
 			search.submit();
 
 			driverWait.until(ExpectedConditions.visibilityOf(driver.findElement
-					(By.partialLinkText(("WhoScored.com")))));
-			driver.findElement(By.partialLinkText("WhoScored.com")).click();	
+					(By.partialLinkText((statsWebsiteLink)))));
+			driver.findElement(By.partialLinkText(statsWebsiteLink)).click();	
 
 			driverWait.until(ExpectedConditions.visibilityOf(driver.findElement
-					(By.xpath("//a[contains(text(),'Fixtures')]//parent::li"))));
-			driver.findElement(By.xpath("//a[contains(text(),'Fixtures')]//parent::li")).click();
+					(By.xpath(xPathFixtures))));
+			driver.findElement(By.xpath(xPathFixtures)).click();
 
 			driverWait.until(ExpectedConditions.visibilityOf(driver.findElement
-					(By.xpath("//div[contains(@class,'col12-xs-12 col12-s-12 col12-m-12 col12-lg-12 ws-panel')]"))));
+					(By.xpath(xPathPanel))));
 
 
 			populateData(driver);
@@ -202,69 +213,69 @@ public class TeamDataReader {
 
 	private static void populateData(WebDriver driver) {
 		try {
-			List<WebElement> statsLst = driver.findElements(By.xpath("//div[contains(@class,"
-					+ "'col12-lg-12 col12-m-12 col12-s-12 col12-xs-12 item divtable-row ')]"));
-
-			// Obtain home team name
-			Select select = new Select(driver.findElement(By.id("teams")));
-			WebElement option = select.getFirstSelectedOption();
-			String homeTeam = option.getText();
-
-			for(WebElement e: statsLst) {
-
-				TeamHistory th = new TeamHistory();
-				int iHomeGoal = 0;
-				int iAwayGoal = 0;
-
-				try {
-					th.setMatchResult(e.findElement(By.xpath(".//div[contains(@class,"
-							+ "'col12-lg-1 col12-m-1 col12-s-1 col12-xs-1 divtable-data form-fixtures')]")).getText());
-				}
-				catch (NoSuchElementException ex) {
-					log.error("Exception while reading elements: {}", ex);
-					continue;
-				}
-				
-				// Populate league in bean
-				th.setLeague(retrieveLeague(e));
-				
-				// Populate opponent name in bean
-				th.setOpponent(retrieveOpponent(e, homeTeam));
-				
-				// Populate match date in bean
-				th.setDate(retrieveMatchDate(e));
-				
-				HashMap<Integer, Integer> goals = retrieveGoals(e, th);
-				iHomeGoal = goals.get(0);
-				iAwayGoal = goals.get(1);
-				th.setHomeGoals(iHomeGoal);
-				th.setAwayGoals(iAwayGoal);
-
-				if ((iHomeGoal > 0)  && (iAwayGoal > 0))
-					th.setBothSidesScored(true);
-
-				if ((iHomeGoal + iAwayGoal) > 2.5 )
-					th.setMoreTotGoals(true);
-
-				teamHistoryLst.add(th);
-			}
+			List<WebElement> statsLst = driver.findElements(By.xpath(xPathTable));
+			retrieveFixtures(driver, statsLst);
 		}
 		catch (NoSuchElementException e) {
 			log.error("Exception while reading elements: {}", e);
 		}
 	}
+	
+	private static void retrieveFixtures(WebDriver driver, List<WebElement> statsLst) {	
+		
+		// Obtain home team name
+		Select select = new Select(driver.findElement(By.id("teams")));
+		WebElement option = select.getFirstSelectedOption();
+		String homeTeam = option.getText();
+		
+		for(WebElement e: statsLst) {
 
+			TeamHistory th = new TeamHistory();
+			int iHomeGoal = 0;
+			int iAwayGoal = 0;
+
+			try {
+				th.setMatchResult(e.findElement(By.xpath(xPathFormFixtures)).getText());
+			}
+			catch (NoSuchElementException ex) {
+				log.error("Exception while reading elements: {}", ex);
+				continue;
+			}
+
+			// Populate league in bean
+			th.setLeague(retrieveLeague(e));
+
+			// Populate opponent name in bean
+			th.setOpponent(retrieveOpponent(e, homeTeam));
+
+			// Populate match date in bean
+			th.setDate(retrieveMatchDate(e));
+
+			HashMap<Integer, Integer> goals = retrieveGoals(e, th);
+			iHomeGoal = goals.get(0);
+			iAwayGoal = goals.get(1);
+			th.setHomeGoals(iHomeGoal);
+			th.setAwayGoals(iAwayGoal);
+
+			if ((iHomeGoal > 0)  && (iAwayGoal > 0))
+				th.setBothSidesScored(true);
+
+			if ((iHomeGoal + iAwayGoal) > 2.5 )
+				th.setMoreTotGoals(true);
+
+			teamHistoryLst.add(th);
+		}
+	}
+	
 	private static String retrieveLeague(WebElement e) {		
 
-		return (e.findElement(By.xpath(".//div[contains(@class,"
-				+ "'col12-lg-1 col12-m-1 col12-s-1 col12-xs-1 tournament divtable-data')]")).getText());
+		return (e.findElement(By.xpath(xPathLeague)).getText());
 	}
 
 	private static String retrieveOpponent(WebElement e, String homeTeam) {		
 
 		String rival = "";
-		List<WebElement> teams = e.findElements(By.xpath(".//div[contains(@class,"
-				+ "'horizontal-match-display team')]"));
+		List<WebElement> teams = e.findElements(By.xpath(xPathOpponent));
 		for(WebElement r: teams) {
 			if (!org.apache.commons.lang3.StringUtils.containsIgnoreCase(r.getText(), homeTeam)) {
 				rival = r.getText().replaceAll("\\d","");
@@ -275,21 +286,19 @@ public class TeamDataReader {
 
 	private static String retrieveMatchDate(WebElement e) {		
 
-		return (e.findElement(By.xpath(".//div[contains(@class,"
-				+ "'col12-lg-1 col12-m-1 col12-s-0 col12-xs-0 date fourth-col-date divtable-data')]")).getText());	
+		return (e.findElement(By.xpath(xPathMatchDate)).getText());	
 	}
-	
+
 	private static HashMap<Integer, Integer> retrieveGoals(WebElement e, TeamHistory th) {
-		
+
 		HashMap<Integer, Integer> goals = new HashMap<>();
 		String homeGoal = null;
 		String awayGoal = null;
 		int iHomeGoal = 0;
 		int iAwayGoal = 0;
 		int iTempGoal = 0;
-		
-		String score = e.findElement(By.xpath(".//div[contains(@class,"
-				+ "'col12-lg-1 col12-m-1 col12-s-0 col12-xs-0 divtable-data result')]")).getText();
+
+		String score = e.findElement(By.xpath(xPathResults)).getText();
 		score = score.replaceAll("\\*", "").replaceAll("\\s", "");
 		String[] scores = score.split(":");
 		for (int i=0 ; i < scores.length; i++) {
@@ -298,10 +307,10 @@ public class TeamDataReader {
 			else
 				awayGoal = scores[i];
 		}
-		
+
 		iHomeGoal = Integer.parseInt(homeGoal);
 		iAwayGoal = Integer.parseInt(awayGoal);
-		
+
 		if (((iHomeGoal > iAwayGoal) && th.getMatchResult().equalsIgnoreCase("L"))
 				|| ((iHomeGoal < iAwayGoal) && th.getMatchResult().equalsIgnoreCase("W"))) {
 			iTempGoal = iHomeGoal;
