@@ -1,0 +1,16 @@
+2020-08-22 13:08:54,533 INFO c.f.s.TeamDataReader [main] Driver closed
+2020-08-22 13:08:54,746 INFO c.f.s.TeamDataReader [main] [ Result: W, League: ISA, Opponent: Cagliari, Date: 01-08-20, Home Goals: 3, Away Goals: 0, Both sides scored: false, Total Goals over 2.5: true]
+2020-08-22 13:08:54,747 INFO c.f.s.TeamDataReader [main] [ Result: W, League: ISA, Opponent: Sampdoria, Date: 29-07-20, Home Goals: 4, Away Goals: 1, Both sides scored: true, Total Goals over 2.5: true]
+2020-08-22 13:08:54,747 INFO c.f.s.TeamDataReader [main] [ Result: D, League: ISA, Opponent: Atalanta, Date: 24-07-20, Home Goals: 1, Away Goals: 1, Both sides scored: true, Total Goals over 2.5: false]
+2020-08-22 13:08:54,748 INFO c.f.s.TeamDataReader [main] [ Result: W, League: ISA, Opponent: Sassuolo, Date: 21-07-20, Home Goals: 2, Away Goals: 1, Both sides scored: true, Total Goals over 2.5: true]
+2020-08-22 13:08:54,749 INFO c.f.s.TeamDataReader [main] [ Result: W, League: ISA, Opponent: Bologna, Date: 18-07-20, Home Goals: 5, Away Goals: 1, Both sides scored: true, Total Goals over 2.5: true]
+2020-08-22 13:08:54,750 INFO c.f.s.TeamDataReader [main] [ Result: W, League: ISA, Opponent: Parma Calcio , Date: 15-07-20, Home Goals: 3, Away Goals: 1, Both sides scored: true, Total Goals over 2.5: true]
+2020-08-22 13:08:54,750 INFO c.f.s.TeamDataReader [main] [ Result: D, League: ISA, Opponent: Napoli, Date: 12-07-20, Home Goals: 2, Away Goals: 2, Both sides scored: true, Total Goals over 2.5: true]
+2020-08-22 13:08:54,750 INFO c.f.s.TeamDataReader [main] [ Result: W, League: ISA, Opponent: Juventus, Date: 07-07-20, Home Goals: 4, Away Goals: 2, Both sides scored: true, Total Goals over 2.5: true]
+2020-08-22 13:08:54,750 INFO c.f.s.TeamDataReader [main] [ Result: W, League: ISA, Opponent: Lazio, Date: 04-07-20, Home Goals: 3, Away Goals: 0, Both sides scored: false, Total Goals over 2.5: true]
+2020-08-22 13:08:54,751 INFO c.f.s.TeamDataReader [main] [ Result: D, League: ISA, Opponent: SPAL , Date: 01-07-20, Home Goals: 2, Away Goals: 2, Both sides scored: true, Total Goals over 2.5: true]
+2020-08-22 13:08:54,751 INFO c.f.s.TeamDataReader [main] [ Team form ] WWDWWWDWWD
+2020-08-22 13:08:54,751 INFO c.f.s.TeamDataReader [main] [ Match Result ] 7W 3D 0L
+2020-08-22 13:08:54,752 INFO c.f.s.TeamDataReader [main] [ Total Matches - Both sides scored ] 8/10
+2020-08-22 13:08:54,752 INFO c.f.s.TeamDataReader [main] [ Total Matches - Over 2.5 goals ] 9/10
+2020-08-22 13:08:54,752 INFO c.f.s.TeamDataReader [main] [ Goals For ] 29 [ Goals Against ] 11
