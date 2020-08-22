@@ -5,7 +5,8 @@
 
 package com.footy.stats;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,8 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +27,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -34,7 +36,7 @@ import com.footy.stats.domain.TeamHistory;
 
 public class TeamDataReader {
 
-	static final Logger log = Logger.getLogger(TeamDataReader.class.getName());
+	static final Logger log = LogManager.getLogger(TeamDataReader.class.getName());
 
 	static String chromeDriver = "";
 	static String chromeDriverPath = "";
