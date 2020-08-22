@@ -92,7 +92,7 @@ public class TeamDataReader {
 					try {
 						return dateFormat.parse(s2).compareTo(dateFormat.parse(s1));
 					} catch (ParseException e) {
-						log.error("Exception while sorting by date: {}", e);
+						log.error("Exception while sorting by date: ", e);
 					}
 					return 0;
 				}));
@@ -119,15 +119,14 @@ public class TeamDataReader {
 
 			if (teamHistoryLst.get(i).isMoreTotGoals())
 				overTotGoals++;
-
-			log.info(teamHistoryLst.get(i).toString());
+			log.info("{}", teamHistoryLst.get(i));
 		}
 
-		log.info("[ Team form ] "+form);
-		log.info("[ Match Result ] "+win+"W "+draw+"D "+lost+"L");
-		log.info("[ Total Matches - Both sides scored ] "+bothSidesScored+ "/"+index);
-		log.info("[ Total Matches - Over 2.5 goals ] "+overTotGoals+ "/"+index);
-		log.info("[ Goals For ] "+goalsFor+ " [ Goals Against ] "+goalsAgainst);
+		log.info("[ Team form ] {}",form);
+		log.info("[ Match Result ] {}W {}D {}L", win, draw, lost);
+		log.info("[ Total Matches - Both sides scored ] {}/{}",bothSidesScored, index);
+		log.info("[ Total Matches - Over 2.5 goals ] {}/{}",overTotGoals, index);
+		log.info("[ Goals For ] {} [ Goals Against ] {}",goalsFor, goalsAgainst);
 		if (!teamHistoryLst.isEmpty())
 			DisplayDataTable.getData(homeTeam, teamHistoryLst, index);
 		System.exit(0);
@@ -156,7 +155,7 @@ public class TeamDataReader {
 			websiteLoadCheckBoolean = prop.getProperty("whoscored.website.load.check.boolean");
 		}
 		catch (Exception e) {
-			log.error("Exception in reading config file: {}", e);
+			log.error("Exception in reading config file: ", e);
 		}
 		finally {
 			if (inStream != null)
@@ -201,10 +200,10 @@ public class TeamDataReader {
 			populateData(driver);
 		}
 		catch (TimeoutException e) {
-			log.error("Timedout reading elements: {}", e);
+			log.error("Timedout reading elements: ", e);
 		}
 		catch (Exception e) {
-			log.error("Exception while reading data from load webpage: {}", e);
+			log.error("Exception while reading data from load webpage: ", e);
 			log.info("Make sure team name is correct and there are no typos");
 		}
 		finally {
@@ -219,7 +218,7 @@ public class TeamDataReader {
 			retrieveFixtures(driver, statsLst);
 		}
 		catch (NoSuchElementException e) {
-			log.error("Exception while reading elements: {}", e);
+			log.error("Exception while reading elements", e);
 		}
 	}
 	
@@ -240,7 +239,7 @@ public class TeamDataReader {
 				th.setMatchResult(e.findElement(By.xpath(xPathFormFixtures)).getText());
 			}
 			catch (NoSuchElementException ex) {
-				log.error("Exception while reading elements: {}", ex);
+				log.error("Exception while reading elements: ", ex);
 				continue;
 			}
 
